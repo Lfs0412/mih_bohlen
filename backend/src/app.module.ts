@@ -10,6 +10,7 @@ import {Entry} from "./entities/entry.entity";
 import { JobModule } from './job/job.module';
 import {ServeStaticModule} from "@nestjs/serve-static";
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -42,7 +43,7 @@ import { join } from 'path';
           synchronize: !isProduction,
         };
       },
-    }),UsersModule, JobModule],
+    }),UsersModule, JobModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

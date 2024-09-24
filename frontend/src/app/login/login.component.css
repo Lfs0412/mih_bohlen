@@ -1,0 +1,18 @@
+body {
+  background-color: #fff; /* White from Luxembourg flag */
+}
+
+h2 {
+  color: #00A4E6; /* Blue from Luxembourg flag */
+}
+
+.btn-primary {
+  background-color: #EF4135; /* Red from Luxembourg flag */
+  border-color: #EF4135;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  background-color: white;
+}

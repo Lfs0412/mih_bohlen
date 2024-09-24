@@ -22,6 +22,9 @@ export class User {
     @Column()
     password: string;
 
+    @Column({nullable: true})
+    refreshToken: string;
+
     @OneToMany(() => Project, project => project.user)
     projects: Project[];
 }
