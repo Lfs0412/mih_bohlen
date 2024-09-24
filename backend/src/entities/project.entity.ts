@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
 import { User } from './user.entity';
 import {Entry} from "./entry.entity";

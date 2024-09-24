@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 import {Project} from "./project.entity";
 

@@ -4,11 +4,9 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {User} from "./entities/user.entity";
+import { User} from "./entities/user.entity";
 import {Project} from "./entities/project.entity";
 import {Entry} from "./entities/entry.entity";
-
-
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -31,7 +29,6 @@ import {Entry} from "./entities/entry.entity";
           database: configService.get<string>('DB_NAME'),
           entities: [User, Project, Entry],
           synchronize: !isProduction,
-          logging: !isProduction,
         };
       },
     }),UsersModule],
