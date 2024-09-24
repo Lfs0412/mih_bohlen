@@ -14,6 +14,9 @@ export class Entry {
     messages: string[];
 
     @Column()
+    status: string;
+
+    @Column()
     createdAt: Date;
 
     @ManyToOne(() => Project, project => project.entries)
