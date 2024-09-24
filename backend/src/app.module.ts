@@ -7,6 +7,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import { User} from "./entities/user.entity";
 import {Project} from "./entities/project.entity";
 import {Entry} from "./entities/entry.entity";
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -31,7 +32,7 @@ import {Entry} from "./entities/entry.entity";
           synchronize: !isProduction,
         };
       },
-    }),UsersModule],
+    }),UsersModule, JobModule],
   controllers: [AppController],
   providers: [AppService],
 })
