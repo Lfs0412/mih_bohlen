@@ -2,11 +2,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+const cookieParser = require('cookie-parser');
 
 async function bootstrap() {
   // Create the main (HTTP) application
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
