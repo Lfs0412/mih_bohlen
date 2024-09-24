@@ -8,6 +8,8 @@ import { User} from "./entities/user.entity";
 import {Project} from "./entities/project.entity";
 import {Entry} from "./entities/entry.entity";
 import { JobModule } from './job/job.module';
+import {ServeStaticModule} from "@nestjs/serve-static";
+import { join } from 'path';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -16,6 +18,14 @@ import { JobModule } from './job/job.module';
         : '../.env.development',
     isGlobal: true,
   }),
+    ...(process.env.NODE_ENV === 'development'
+        ? [
+          ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', '..', 'frontend', 'dist', 'frontend', 'browser'),
+            exclude: ['/api*'], // Exclude API routes
+          }),
+        ]
+        : []),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

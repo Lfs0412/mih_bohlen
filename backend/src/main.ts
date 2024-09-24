@@ -6,13 +6,12 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 async function bootstrap() {
   // Create the main (HTTP) application
   const app = await NestFactory.create(AppModule);
-
-  // Set up the microservice to listen for events
+  app.setGlobalPrefix('api');
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
       host: 'localhost',
-      port: 3002, // This should match the port the microservice's ClientProxy is emitting to
+      port: 3002,
     },
   });
 
