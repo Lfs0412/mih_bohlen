@@ -42,6 +42,7 @@ export class AuthService {
   }
 
   logout(){
+    this.userSubject.next(null);  // Clear user state on logout
     return this.http.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
   }
 
