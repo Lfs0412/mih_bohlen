@@ -4,6 +4,7 @@ import {Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {ClientProxy, EventPattern} from '@nestjs/microservices';
 import {RequestGateway} from "./request.gateway";
+import {AIRequestDTO} from "./DTOs/AiRequestDTO";
 
 
 @Injectable()
@@ -14,11 +15,10 @@ export class JobService {
     ) {
     }
 
-    async createRequest(clientId: string, userId: number, requestData: any) {
+    async createRequest(requestData: AIRequestDTO) {
+        console.log(requestData)
         this.client.emit('create_request', {
-            clientId,
-            requestData,
-            userId,
+            requestData
         })
     }
 
@@ -26,7 +26,7 @@ export class JobService {
     async handleOfferCompleted(data: any) {
         const {clientId, resultData} = data;
         console.log('Received offer_completed event with data:', data);
-        this.requestGateway.sendOfferReadyNotification(clientId);
+        this.requestGateway.sendOfferReadyNotification(clientId, data.response.value);
         console.log("frontend client notified")
     }
 

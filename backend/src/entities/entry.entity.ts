@@ -23,5 +23,5 @@ export class Entry {
     project: Project;
 
     @Column({ unique: true })
-    threadId: number;
+    threadId: string;
 }

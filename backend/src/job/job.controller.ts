@@ -2,24 +2,22 @@
 import {Controller, Post, Body, Param} from '@nestjs/common';
 import { JobService} from "./job.service";
 import {EventPattern} from "@nestjs/microservices";
+import {AIRequestDTO} from "./DTOs/AiRequestDTO";
 
 @Controller('job')
 export class JobController {
     constructor(private readonly jobService: JobService) {}
 
     @Post('requestJob')
-    async requestJob(@Body() requestJobDTO: any) {
-        const { clientId, userId, requestData } = requestJobDTO;
+    async requestJob(@Body() aiRequest: AIRequestDTO) {
 
-        const offer = await this.jobService.createRequest(
-            clientId,
-            userId,
-            requestData
+        await this.jobService.createRequest(
+            aiRequest
         );
-        return { message: 'Angebot wird erstellt.'};
+        return { message: 'Request to AI pending.'};
     }
 
-    @EventPattern('offer_completed')
+    @EventPattern('request_completed')
     handleOfferCompleted(data:any){
         return this.jobService.handleOfferCompleted(data);
     }
