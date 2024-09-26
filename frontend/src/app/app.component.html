@@ -1,4 +1,8 @@
-@if(isLoggedIn){
-  <div>Navbar will be displayed</div>
-}
-<router-outlet></router-outlet>
+<div class="app-container d-flex">
+  @if (isLoggedIn) {
+    <app-navbar></app-navbar>
+  }
+</div>
+<div class="content-container flex-grow-1">
+  <router-outlet></router-outlet>
+</div>
