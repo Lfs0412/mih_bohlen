@@ -21,7 +21,8 @@ export class RequestGateway {
         client.join(clientId);
     }
 
-    sendOfferReadyNotification(clientId: string) {
-        this.server.to(clientId).emit('requestReady');
+    sendOfferReadyNotification(clientId: string, data: string) {
+        console.log('Received Ai response in Gateway with event data:', data);
+        this.server.to(clientId).emit('requestReady', data);
     }
 }
