@@ -6,11 +6,12 @@ import {provideToastr, ToastrModule} from "ngx-toastr";
 import {OnInit} from "@angular/core";
 import {AuthService} from "./auth/auth.service";
 import {User} from "./auth/user.interface";
+import {NavbarComponent} from "./navbar/navbar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastrModule,],
+  imports: [RouterOutlet, ToastrModule, NavbarComponent,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
