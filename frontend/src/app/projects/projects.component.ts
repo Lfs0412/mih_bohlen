@@ -33,8 +33,9 @@ export class ProjectsComponent implements OnInit {
   // Projekte abrufen
   fetchProjects() {
     this.projectInformationService.getProjects().subscribe(
-      (data: Project[]) => {
-        this.projects = data;
+      (data: any) => {
+        console.log(data.projects)
+        this.projects = data.projects
         this.toastr.success('Projekte erfolgreich geladen');
       },
       error => {
@@ -44,7 +45,7 @@ export class ProjectsComponent implements OnInit {
     );
   }
 
-  // Projekt erstellen
+  // Neues Projekt erstellen
   submitCreateProject() {
     if (this.newProjectName && this.newProjectDescription) {
       this.projectInformationService.createProject(this.newProjectName, this.newProjectDescription).subscribe(
@@ -52,25 +53,19 @@ export class ProjectsComponent implements OnInit {
           this.toastr.success('Projekt erfolgreich erstellt');
           this.newProjectName = '';
           this.newProjectDescription = '';
-          this.fetchProjects(); // Aktualisiere die Liste der Projekte
+          this.fetchProjects(); // Projekte neu laden
 
-          // Modal schließen (Bootstrap spezifisch)
-          this.closeModal();
+          // Modal schließen
+          const modal = document.getElementById('createProjectModal');
+          if (modal) {
+            const bootstrapModal = new (window as any).bootstrap.Modal(modal);
+            bootstrapModal.hide();
+          }
         },
         (error) => {
           this.toastr.error('Fehler beim Erstellen des Projekts');
         }
       );
-    }
-  }
-
-  // Modal schließen
-  closeModal() {
-    // Verwende jQuery oder native JS, um das Modal zu schließen
-    const modal = document.getElementById('createProjectModal');
-    if (modal) {
-      // Mit Bootstrap's jQuery spezifischer Funktion
-      (window as any).$(`#createProjectModal`).modal('hide');
     }
   }
 
