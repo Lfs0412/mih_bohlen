@@ -1,7 +1,6 @@
-// @ts-ignore
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn } from 'typeorm';
 import { User } from './user.entity';
-import {Entry} from "./entry.entity";
+import { Entry } from "./entry.entity";
 
 @Entity()
 export class Project {
@@ -15,7 +14,13 @@ export class Project {
     projectName: string;
 
     @Column()
+    projectDescription: string;
+
+    @CreateDateColumn()
     createdAt: Date;
+
+    @Column({ default: false })
+    isFavorite: boolean;
 
     @OneToMany(() => Entry, entry => entry.project)
     entries: Entry[];

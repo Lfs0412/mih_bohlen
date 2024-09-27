@@ -11,6 +11,7 @@ import { JobModule } from './job/job.module';
 import {ServeStaticModule} from "@nestjs/serve-static";
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -43,7 +44,7 @@ import { AuthModule } from './auth/auth.module';
           synchronize: !isProduction,
         };
       },
-    }),UsersModule, JobModule, AuthModule],
+    }),UsersModule, JobModule, AuthModule, ProjectsModule],
   controllers: [AppController],
   providers: [AppService],
 })
