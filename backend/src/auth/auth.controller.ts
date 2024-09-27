@@ -13,10 +13,11 @@ export class AuthController {
 
     @Post('login')
     async login(
-        @Body('username') username: string,
-        @Body('password') password: string,
-        @Res({passthrough: true}) response: Response,
+        @Body() body: { username: string, password: string },
+        @Res({ passthrough: true }) response: Response,
     ) {
+        const { username, password } = body;
+        console.log(username);
         const user = await this.authService.verifyUser(username, password);
         await this.authService.login(user, response);
     }

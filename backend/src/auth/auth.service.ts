@@ -76,10 +76,12 @@ export class AuthService {
     }
 
     async verifyUser(username: string, password: string) {
+        console.log(username)
         try {
             const user = await this.usersService.getUser({
                 username
             });
+            console.log(user)
             const authenticated = await compare(password, user.password);
             if (!authenticated) {
                 throw new UnauthorizedException();

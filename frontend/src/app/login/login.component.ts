@@ -24,7 +24,7 @@ export class LoginComponent {
   login() {
     this.authService.login(this.username, this.password).subscribe(
       () => {
-        this.router.navigate(['/dashboard']); // Redirect to dashboard on successful login
+        this.router.navigate(['/home']); // Redirect to dashboard on successful login
         this.toastr.success('Login Sucessful', 'Success')
       },
       (err) => {

@@ -1,0 +1,54 @@
+<div class="container">
+  @if(projects.length === 0){
+    <p>Sie haben derzeit keine Projekte. Legen Sie gerne ein neues an</p>
+  }@else{
+    @for(project of projects; track $index){
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" (click)="goToProjectEntries(project.id)">
+
+          <!-- Projektinformationen -->
+          <div class="project-details">
+            <h5>{{ project.projectName }}</h5>
+            <p> id: {{project.id}}</p>
+            <p>{{ project.projectDescription }}</p>
+            <small class="text-muted">Erstellt am: {{ project.createdAt}}</small>
+          </div>
+
+          <!-- Button-Gruppe für Aktionen (Bearbeiten und Löschen) -->
+          <div class="btn-group">
+              <!--<button class="btn btn-primary btn-sm mr-2" (click)="editProject(project)">Bearbeiten</button> -->
+            <button class="btn btn-danger btn-sm" (click)="deleteProject(project.id)">Löschen</button>
+
+          </div>
+        </li>
+      </ul>
+    }
+  }
+  <!-- Modal -->
+  <div class="modal fade" id="createProjectModal" tabindex="-1" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createProjectModalLabel">Neues Projekt anlegen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="submitCreateProject()">
+            <div class="mb-3">
+              <label for="projectName" class="form-label">Projektname</label>
+              <input type="text" class="form-control" id="projectName" [(ngModel)]="newProjectName" name="projectName" placeholder="Projektname" required>
+            </div>
+            <div class="mb-3">
+              <label for="projectDescription" class="form-label">Projektbeschreibung</label>
+              <textarea class="form-control" id="projectDescription" [(ngModel)]="newProjectDescription" name="projectDescription" rows="3" placeholder="Projektbeschreibung" required></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+              <button type="submit" class="btn btn-success">Projekt erstellen</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="header-container d-flex justify-content-between align-items-center">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/projects">Projects</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ projectName }}</li>
+    </ol>
+  </nav>
+
+  <ng-container *ngIf="isProjectsRoute">
+    <button class="btn btn-danger" (click)="createProject()">Create new Project</button>
+  </ng-container>
+
+  <ng-container *ngIf="isEntriesRoute">
+    <button class="btn btn-danger" (click)="createEntry()">Create new Entry</button>
+  </ng-container>
+
+  <ng-container *ngIf="isChatRoute">
+    <button class="btn btn-danger" (click)="createExcel()">Create Excel</button>
+  </ng-container>
+</div>

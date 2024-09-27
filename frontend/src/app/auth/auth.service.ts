@@ -14,9 +14,9 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // Call the login endpoint
-  login(email: string, password: string) {
+  login(username: string, password: string) {
     return this.http
-      .post('http://localhost:3000/api/auth/login', { email, password }, { withCredentials: true })
+      .post('http://localhost:3000/api/auth/login', { username, password }, { withCredentials: true })
       .pipe(
         tap(() => this.getUserProfile()), // Fetch user data after login
         catchError(this.handleError)

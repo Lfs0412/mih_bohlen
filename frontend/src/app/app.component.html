@@ -1,8 +1,16 @@
 <div class="app-container d-flex">
-  @if (isLoggedIn) {
-    <app-navbar></app-navbar>
-  }
-</div>
-<div class="content-container flex-grow-1">
-  <router-outlet></router-outlet>
+  <ng-container *ngIf="isLoggedIn">
+    <app-navbar></app-navbar> <!-- Sidebar on the left -->
+    <div class="content-container flex-grow-1">
+      <app-header></app-header> <!-- Header at the top -->
+      <div class="page-content">
+        <router-outlet></router-outlet> <!-- Where the project list or other content will render -->
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isLoggedIn">
+    <div class="content-container flex-grow-1">
+      <router-outlet></router-outlet> <!-- This will show a login or other public content -->
+    </div>
+  </ng-container>
 </div>
