@@ -8,11 +8,12 @@ import {AuthService} from "./auth/auth.service";
 import {User} from "./auth/user.interface";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {HeaderComponent} from "./header/header.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastrModule, NavbarComponent, HeaderComponent,],
+  imports: [RouterOutlet, ToastrModule, NavbarComponent, HeaderComponent, NgIf,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

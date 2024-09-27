@@ -3,14 +3,14 @@
     <h2 class="text-center mb-4" style="color: #00A4E6;">Make it Happen</h2>
     <form (submit)="login()" novalidate>
       <div class="form-group mb-3">
-        <label for="email">Email</label>
+        <label for="username">Username</label>
         <input
           [(ngModel)]="username"
-          name="email"
-          id="email"
-          type="email"
+          name="username"
+          id="username"
+          type="text"
           class="form-control"
-          placeholder="Enter your email"
+          placeholder="Enter your Username"
           required />
       </div>
       <div class="form-group mb-3">

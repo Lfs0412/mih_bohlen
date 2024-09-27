@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ProjectInformationService } from "./project-information.service";
 import {FormsModule} from "@angular/forms";
+import {BreadcrumbService} from "../shared/breadcrumb.service";
 
 @Component({
   selector: 'app-projects',
@@ -23,7 +24,8 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private projectInformationService: ProjectInformationService
+    private projectInformationService: ProjectInformationService,
+    private breadcrumbService: BreadcrumbService
   ) {}
 
   ngOnInit() {
@@ -99,8 +101,15 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-  goToProjectEntries(projectID:number){
-    console.log('I`m clicked but nothing happend! ;)')
-    this.router.navigate(['/entries',projectID])
+  goToProjectEntries(projectId: number): void {
+    const selectedProject = this.projects.find(project => project.id === projectId);
+
+    if (selectedProject) {
+      // Set the project name in the breadcrumb service
+      this.breadcrumbService.setProjectName(selectedProject.projectName);
+    }
+
+    // Navigate to the entries page for this project
+    this.router.navigate(['/entries', projectId]);
   }
 }

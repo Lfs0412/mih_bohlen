@@ -1,0 +1,28 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+app-navbar {
+  width: 250px; /* Adjust width as necessary */
+  background-color: #f1f1f1;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+app-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+.page-content {
+  flex-grow: 1;
+  padding: 1rem;
+  background-color: #fff;
+}
