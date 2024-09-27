@@ -34,8 +34,8 @@ export class ProjectsComponent implements OnInit {
   fetchProjects() {
     this.projectInformationService.getProjects().subscribe(
       (data: any) => {
-        console.log(data.projects)
-        this.projects = data.projects
+        console.log(data.projects.projects)
+        this.projects = data.projects.projects
         this.toastr.success('Projekte erfolgreich geladen');
       },
       error => {
@@ -71,6 +71,9 @@ export class ProjectsComponent implements OnInit {
 
   // Projekt löschen
   deleteProject(projectID: number) {
+    // Verhindert, dass das List-Item-Klickereignis ausgeführt wird
+    //event.stopPropagation();
+
     this.projectInformationService.deleteProject(projectID).subscribe(
       () => {
         this.toastr.success('Projekt erfolgreich gelöscht');
@@ -95,5 +98,9 @@ export class ProjectsComponent implements OnInit {
         console.error('Fehler beim Aktualisieren des Projekts:', error);
       }
     );
+  }
+  goToProjectEntries(projectID:number){
+    console.log('I`m clicked but nothing happend! ;)')
+    this.router.navigate(['/entries',projectID])
   }
 }

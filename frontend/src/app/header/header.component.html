@@ -1,0 +1,12 @@
+<div class="header-container d-flex justify-content-between align-items-center">
+  <h1 class="header-title">Projects</h1>
+  @if (isProjectsRoute){
+    <button class="btn btn-primary" (click)="createProject()">Create Project</button>
+  } @else if (isEntriesRoute){
+    <button class="btn btn-primary" (click)="createEntry()">Create Entry</button>
+
+  }@else if (isEntriesRoute){
+    <button class="btn btn-primary" (click)="createExcel()">Create Excel</button>
+
+  }
+</div>

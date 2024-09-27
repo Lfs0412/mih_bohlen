@@ -1,3 +1,7 @@
 .container{
   margin-left: 250px;
 }
+.list-group-item:hover {
+  background-color: #f0f0f0; /* Leichte Hintergrundfarbe beim Hover */
+  cursor: pointer;
+}

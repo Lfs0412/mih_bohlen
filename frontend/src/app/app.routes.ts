@@ -4,10 +4,12 @@ import { LoginComponent} from "./login/login.component";
 import { HomeComponent} from "./home/home.component";
 import { AuthGuard} from "./auth/auth.guard";
 import {ProjectsComponent} from "./projects/projects.component";
+import {EntriesComponent} from "./entries/entries.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'projects', component: ProjectsComponent },
+  { path: 'entries/:id', component: EntriesComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

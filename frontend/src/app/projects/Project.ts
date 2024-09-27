@@ -1,6 +1,6 @@
 export interface Project{
-  projectID:number;
+  id:number;
   projectName:string;
   projectDescription:string;
-  projectCreationDate?:string;
+  createdAt?:string;
 }
