@@ -1,0 +1,24 @@
+<div class="modal-body">
+  <form (ngSubmit)="submitCreateEntry()">
+    <div class="mb-3">
+      <label for="entryIndex" class="form-label">Position</label>
+      <input type="text" class="form-control" id="entryIndex" [(ngModel)]="newEntryIndex" name="entryIndex" placeholder="Position 2.1" required>
+    </div>
+    <div class="mb-3">
+      <label for="entryName" class="form-label">Name</label>
+      <input type="text" class="form-control" id="entryName" [(ngModel)]="newEntryName" name="entryName" placeholder="Brandschutztür" required>
+    </div>
+    <div class="mb-3">
+      <label for="entryInstruction" class="form-label">Anweisungen</label>
+      <textarea class="form-control" id="entryInstruction" [(ngModel)]="newEntryInstruction" name="entryInstruction" rows="3" placeholder="Ihre Anweisungen..." required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="entryDescription" class="form-label">Beschreibung</label>
+      <textarea class="form-control" id="entryDescription" [(ngModel)]="newEntryDescription" name="entryDescription" rows="3" placeholder="Ihre Beschreibung..." required></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Abbrechen</button>
+      <button type="submit" class="btn btn-success">Eintrag erstellen</button>
+    </div>
+  </form>
+</div>

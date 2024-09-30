@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { ProjectInformationService } from "./project-information.service";
 import {FormsModule} from "@angular/forms";
 import {BreadcrumbService} from "../shared/breadcrumb.service";
+import {ProjectEventsService} from "../shared/projectEvent.service";
 
 @Component({
   selector: 'app-projects',
@@ -25,11 +26,16 @@ export class ProjectsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private projectInformationService: ProjectInformationService,
-    private breadcrumbService: BreadcrumbService
+    private breadcrumbService: BreadcrumbService,
+    private projectEventsService: ProjectEventsService  // Inject the service
+
   ) {}
 
   ngOnInit() {
     this.fetchProjects();
+    this.projectEventsService.projectCreated$.subscribe(() => {
+      this.fetchProjects();  // Refresh project list when a project is created
+    });
   }
 
   // Projekte abrufen
@@ -47,29 +53,6 @@ export class ProjectsComponent implements OnInit {
     );
   }
 
-  // Neues Projekt erstellen
-  submitCreateProject() {
-    if (this.newProjectName && this.newProjectDescription) {
-      this.projectInformationService.createProject(this.newProjectName, this.newProjectDescription).subscribe(
-        () => {
-          this.toastr.success('Projekt erfolgreich erstellt');
-          this.newProjectName = '';
-          this.newProjectDescription = '';
-          this.fetchProjects(); // Projekte neu laden
-
-          // Modal schließen
-          const modal = document.getElementById('createProjectModal');
-          if (modal) {
-            const bootstrapModal = new (window as any).bootstrap.Modal(modal);
-            bootstrapModal.hide();
-          }
-        },
-        (error) => {
-          this.toastr.error('Fehler beim Erstellen des Projekts');
-        }
-      );
-    }
-  }
 
   // Projekt löschen
   deleteProject(projectID: number) {
