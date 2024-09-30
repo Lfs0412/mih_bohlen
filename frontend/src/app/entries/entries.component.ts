@@ -4,6 +4,7 @@ import {EntriesService} from "./entries.service";
 import {ToastrService} from "ngx-toastr";
 import {ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {EntryEventsService} from "../shared/entryEvent.service";
 
 @Component({
   selector: 'app-entries',
@@ -25,7 +26,8 @@ export class EntriesComponent {
   constructor(
     private entriesService: EntriesService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private entryEventsService: EntryEventsService
   ) {}
 
   ngOnInit() {
@@ -37,6 +39,10 @@ export class EntriesComponent {
       } else {
         this.toastr.error('Projekt-ID nicht gefunden');
       }
+    });
+
+    this.entryEventsService.entryCreated$.subscribe(() => {
+      this.fetchEntries();  // Refresh entries when a new entry is created
     });
   }
 
@@ -54,43 +60,6 @@ export class EntriesComponent {
     );
   }
 
-  // Neuen Eintrag erstellen
-  submitCreateEntry() {
-    console.log(this.newEntryIndex, this.newEntryInstruction, this.newEntryName, 'Werte sind gesetzt');
-    if (this.newEntryInstruction && this.newEntryName && this.newEntryDescription) {
-      this.entriesService.createEntry(Number(this.projectId), this.newEntryIndex, this.newEntryName, this.newEntryInstruction,this.newEntryDescription).subscribe(
-        (newEntry: Entry) => {
-          this.entries.push(newEntry);
-          this.toastr.success('Eintrag erfolgreich erstellt');
-          this.resetForm();
-          this.closeModal();
-        },
-        error => {
-          this.toastr.error('Fehler beim Erstellen des Eintrags');
-          console.error('Fehler beim Erstellen des Eintrags:', error);
-        }
-      );
-    } else {
-      this.toastr.warning('Bitte füllen Sie alle Felder aus.');
-    }
-  }
-
-  // Formular zurücksetzen
-  resetForm() {
-    this.newEntryIndex = '';
-    this.newEntryName = '';
-    this.newEntryDescription = '';
-    this.newEntryInstruction = '';
-  }
-
-  // Modal schließen
-  closeModal() {
-    const modal = document.getElementById('createEntryModal');
-    if (modal) {
-      const bootstrapModal = new (window as any).bootstrap.Modal(modal);
-      bootstrapModal.hide();
-    }
-  }
 
   // Eintrag löschen
   deleteEntry(entryId: number) {

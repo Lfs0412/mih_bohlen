@@ -1,10 +1,6 @@
 <div class="container">
   <h2>Positions Einträge</h2>
 
-  <!-- Button, um das Modal zu öffnen -->
-  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createEntryModal">
-    Neuen Eintrag erstellen
-  </button>
 
   <!-- Anzeige, wenn keine Einträge vorhanden sind -->
   @if(entries.length === 0){
@@ -34,36 +30,4 @@
     }
   }
 
-  <!-- Modal für das Erstellen eines neuen Eintrags -->
-  <div class="modal fade" id="createEntryModal" tabindex="-1" aria-labelledby="createEntryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createEntryModalLabel">Neuen Eintrag erstellen</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="submitCreateEntry()">
-            <div class="mb-3">
-              <label for="entryPosition" class="form-label">Position</label>
-              <input type="text" class="form-control" id="entryPosition" [(ngModel)]="newEntryIndex" name="entryPosition" placeholder="Position 2.1" required>
-
-              <label for="entryName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="entryName" [(ngModel)]="newEntryName" name="entryName" placeholder="Brandschutztür" required>
-
-              <label for="entryMessage" class="form-label">Anweisungen</label>
-              <textarea class="form-control" id="entryMessage" [(ngModel)]="newEntryInstruction" name="entryMessage" rows="3" placeholder="Ihre Anweisungen..." required></textarea>
-
-              <label for="entryDescription" class="form-label">Beschreibung</label>
-              <textarea class="form-control" id="entryDescription" [(ngModel)]="newEntryDescription" rows="3" name="entryDescription" placeholder="Ihre Beschreibung..." required> </textarea>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-              <button type="submit" class="btn btn-success">Eintrag erstellen</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
