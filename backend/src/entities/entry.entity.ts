@@ -8,13 +8,14 @@ export class Entry {
     id: number;
 
     @Column()
-    entryName: string;
-
-    @Column("text", { array: true })
-    messages: string[];
+    index: string;
 
     @Column()
-    status: string;
+    entryName: string;
+
+
+    @Column({ default: false})
+    pending: boolean;
 
     @Column()
     createdAt: Date;
