@@ -1,8 +1,69 @@
 <div class="container">
-  <form action="">
-    <input type="text" class="form-control" placeholder="Position name">
-    <input type="text" class="input-control" placeholder="instructions">
-    <button class="btn btn-primary">Submit</button>
+  <h2>Positions Einträge</h2>
 
-  </form>
+  <!-- Button, um das Modal zu öffnen -->
+  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#createEntryModal">
+    Neuen Eintrag erstellen
+  </button>
+
+  <!-- Anzeige, wenn keine Einträge vorhanden sind -->
+  @if(entries.length === 0){
+    <p>Es sind derzeit keine Einträge vorhanden. Erstellen Sie gerne Ihren ersten!</p>
+  }
+
+  <!-- Liste der Einträge, wenn vorhanden -->
+  @if(entries.length > 0){
+    @for(entry of entries; track $index){
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+
+          <!-- Eintragsinformationen -->
+          <div class="entry-details">
+            <h5>{{ entry.index}}</h5>
+            <p>{{ entry.entryName }}</p>
+            <small class="text-muted">Erstellt am: {{ entry.createdAt }}</small>
+          </div>
+
+          <!-- Button-Gruppe für Aktionen (Bearbeiten, Löschen) -->
+          <div class="btn-group">
+            <!--  <button class="btn btn-primary btn-sm mr-2" (click)="editEntry(entry)">Bearbeiten</button>-->
+            <button class="btn btn-danger btn-sm" (click)="deleteEntry(entry.entryID)">Löschen</button>
+          </div>
+        </li>
+      </ul>
+    }
+  }
+
+  <!-- Modal für das Erstellen eines neuen Eintrags -->
+  <div class="modal fade" id="createEntryModal" tabindex="-1" aria-labelledby="createEntryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createEntryModalLabel">Neuen Eintrag erstellen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="submitCreateEntry()">
+            <div class="mb-3">
+              <label for="entryPosition" class="form-label">Position</label>
+              <input type="text" class="form-control" id="entryPosition" [(ngModel)]="newEntryIndex" name="entryPosition" placeholder="Position 2.1" required>
+
+              <label for="entryName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="entryName" [(ngModel)]="newEntryName" name="entryName" placeholder="Brandschutztür" required>
+
+              <label for="entryMessage" class="form-label">Anweisungen</label>
+              <textarea class="form-control" id="entryMessage" [(ngModel)]="newEntryInstruction" name="entryMessage" rows="3" placeholder="Ihre Anweisungen..." required></textarea>
+
+              <label for="entryDescription" class="form-label">Beschreibung</label>
+              <textarea class="form-control" id="entryDescription" [(ngModel)]="newEntryDescription" rows="3" name="entryDescription" placeholder="Ihre Beschreibung..." required> </textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+              <button type="submit" class="btn btn-success">Eintrag erstellen</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -16,11 +16,14 @@ export class JobService {
     }
 
     async createRequest(requestData: AIRequestDTO) {
-        console.log(requestData)
-        this.client.emit('create_request', {
-            requestData
-        })
+        try {
+            await this.client.connect();
+            this.client.emit('create_request', { requestData });
+        } catch (error) {
+            console.error('Microservice connection error:', error);
+        }
     }
+
 
 
     async handleOfferCompleted(data: any) {

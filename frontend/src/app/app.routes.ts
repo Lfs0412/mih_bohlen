@@ -8,8 +8,8 @@ import {EntriesComponent} from "./entries/entries.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'entries/:id', component: EntriesComponent },
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+  { path: 'entries/:id', component: EntriesComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
