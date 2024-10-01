@@ -29,8 +29,6 @@ export class EntriesController {
     // GET: /entries/:id - Einen einzelnen Eintrag abrufen
     @Get(':id')
     async getEntryById(@Param('id') id: number): Promise<Entry> {
-         const entry = await this.entriesService.getEntryById(id);
-         console.log(entry)
-        return entry
+      return await this.entriesService.getEntryById(id);
     }
 }

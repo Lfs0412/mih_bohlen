@@ -1,29 +1,32 @@
-<!--<div class="container">
-<div class="row">
-<div class="col-md-12">
-<h3>Chat</h3>
-
-Nachrichtenliste
-      <div class="chat-window border p-3 mb-3" style="height: 400px; overflow-y: scroll;">
-        @for (message of messages){
-          <ul class="list-group">
-            <li class="list-group-item">
-              <strong>{{ message.sender }}:</strong> {{ message.text }}
-              <small class="text-muted float-right">{{ message.timestamp }}</small>
-            </li>
-          </ul>
-        }
-      </div>-->
-
-      <!-- Eingabe für neue Nachrichten
-      <div class="input-group">
-        <input type="text" class="form-control" [(ngModel)]="newMessage" placeholder="Nachricht eingeben..." (keydown.enter)="sendMessage()" />
-        <div class="input-group-append">
-          <button class="btn btn-primary" (click)="sendMessage()">Senden</button>
-        </div>
+<div class="chat-container">
+  <div class="chat-window">
+    <div *ngFor="let message of messages">
+      <div [ngClass]="{'assistant-msg': message.sender === 'Assistant', 'user-msg': message.sender === 'User'}">
+        <span *ngIf="!message.isMarkdown">{{ message.sender }}: {{ message.text }}</span>
+        <span *ngIf="message.isMarkdown" [innerHTML]="message.text"></span> <!-- For Markdown content -->
       </div>
+    </div>
 
+    <!-- Pending message or animation -->
+    <div *ngIf="isPending" class="pending-message">
+      <div class="spinner-border text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      {{ waitingMessage }}
     </div>
   </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      class="form-control"
+      [disabled]="isPending"
+      placeholder="Type your message..."
+      (keydown.enter)="sendMessage()"
+    />
+    <button class="btn btn-danger" (click)="sendMessage()">
+      Send
+    </button>
+  </div>
 </div>
--->
