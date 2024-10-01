@@ -44,7 +44,6 @@ export class ProjectsComponent implements OnInit {
       (data: any) => {
         console.log(data.projects.projects)
         this.projects = data.projects.projects
-        this.toastr.success('Projekte erfolgreich geladen');
       },
       error => {
         this.toastr.error('Fehler beim Abrufen der Projekte');

@@ -1,7 +1,11 @@
+import {Project} from "../projects/Project";
+
 export interface Entry {
-  entryID:number;
-  entryName:string;
-  index:string;
-  messages: string;
-  createdAt:string;
+  id: number;
+  index: string;
+  entryName: string;
+  pending: boolean;
+  createdAt: string;
+  threadId: string;
+  project: Project;  // This field will contain the related project details
 }

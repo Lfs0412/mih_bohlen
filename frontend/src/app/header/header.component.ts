@@ -1,100 +1,115 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, NavigationEnd, RouterLink, ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {Router, NavigationEnd, ActivatedRouteSnapshot, RouterLink} from '@angular/router';
 import { filter } from 'rxjs/operators';
-import {NgIf} from "@angular/common";
-import {BreadcrumbService} from "../shared/breadcrumb.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ProjectModalComponent} from "../project-modal/project-modal.component";
-import {EntryModalComponent} from "../entry-modal/entry-modal.component";
-import {ProjectEventsService} from "../shared/projectEvent.service";
+import { NgIf } from '@angular/common';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectModalComponent } from '../project-modal/project-modal.component';
+import { EntryModalComponent } from '../entry-modal/entry-modal.component';
+import { ProjectInformationService } from '../projects/project-information.service';
+import { EntriesService } from '../entries/entries.service';
+import { Project } from '../projects/Project';
+import { Entry } from '../entries/Entry';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   standalone: true,
-  imports: [
-    NgIf,
-    RouterLink,
-  ],
+  imports: [NgIf, RouterLink],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   projectId: number | null = null;
-  isProjectsRoute: boolean = true;
-  isEntriesRoute: boolean = false;
-  isChatRoute: boolean = false;
-  isHomeRoute: boolean = false;
-  projectName: string = ''; // Default breadcrumb name;
+  entryId: number | null = null;
+  projectName: string = '';
+  entryName: string = '';
+  isProjectsRoute = true;
+  isEntriesRoute = false;
+  isChatRoute = false;
 
-
-  constructor(private modalService: NgbModal, private router: Router, private breadcrumbService: BreadcrumbService, private projectEventsService: ProjectEventsService) {
-    // Listen to router events to get the current route snapshot
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)  // Only consider NavigationEnd events
-    ).subscribe(() => {
+  constructor(
+    private modalService: NgbModal,
+    private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    private projectInformationService: ProjectInformationService,
+    private entryService: EntriesService
+  ) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       const currentRoute = this.router.routerState.root.snapshot;
-      const projectId = this.getRouteParameter(currentRoute, 'id');  // Retrieve the 'id' parameter
-      this.projectId = projectId ? Number(projectId) : null;
+      this.projectId = this.getRouteParameter(currentRoute, 'id') ? Number(this.getRouteParameter(currentRoute, 'id')) : null;
+      this.entryId = this.getRouteParameter(currentRoute, 'entryId') ? Number(this.getRouteParameter(currentRoute, 'entryId')) : null;
+
+      if (this.projectId) this.fetchProjectName(this.projectId);
+      if (this.entryId) this.fetchEntryName(this.entryId);
     });
   }
 
-  // Helper function to recursively traverse activated routes and find the 'id' parameter
-  private getRouteParameter(routeSnapshot: ActivatedRouteSnapshot, param: string): string | null {
+  ngOnInit(): void {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
+      this.setRouteFlags((event as NavigationEnd).url);
+    });
+
+    this.breadcrumbService.currentProjectName.subscribe(name => {
+      this.projectName = name;
+    });
+  }
+
+  getRouteParameter(routeSnapshot: ActivatedRouteSnapshot, param: string): string | null {
     while (routeSnapshot.firstChild) {
       routeSnapshot = routeSnapshot.firstChild;
     }
     return routeSnapshot.paramMap.get(param);
   }
 
-  openCreateProjectModal() {
+  openCreateProjectModal(): void {
     this.modalService.open(ProjectModalComponent);
   }
 
-  openCreateEntryModal() {
+  openCreateEntryModal(): void {
     if (this.projectId) {
       const modalRef = this.modalService.open(EntryModalComponent);
-      modalRef.componentInstance.projectId = this.projectId;  // Pass the projectId to the modal
+      modalRef.componentInstance.projectId = this.projectId;
     } else {
-      console.error('Projekt-ID nicht gefunden');
+      console.error('Project ID not found');
     }
   }
 
-  ngOnInit(): void {
-    // Listen to route changes
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.setRouteFlags(event.url); // Update the route flags and reset breadcrumb if necessary
-      });
-
-    // Subscribe to the breadcrumb project name updates
-    this.breadcrumbService.currentProjectName.subscribe(name => {
-      this.projectName = name; // Update project name for the breadcrumb
-    });
-  }
-
-
-
-
-  // Set the flags based on the current route
   setRouteFlags(url: string): void {
-    // Reset the breadcrumb when navigating back to the "projects" route
     if (url === '/projects') {
-      this.breadcrumbService.setProjectName(''); // Reset project name when back in the projects view
+      this.breadcrumbService.setProjectName('');
+      this.entryName = '';
     }
+
+    if (!url.startsWith('/entries:id')) {
+      this.entryName = '';
+    }
+
     this.isProjectsRoute = url === '/projects';
     this.isEntriesRoute = url.startsWith('/entries');
     this.isChatRoute = url.startsWith('/chat');
   }
 
-
-  // Functions to call based on the current route
-  createProject() {
-    console.log('Creating a new project');
+  fetchProjectName(projectId: number): void {
+    this.projectInformationService.getProject(projectId).subscribe({
+      next: (fetchedProject: Project) => {
+        this.breadcrumbService.setProjectName(fetchedProject.projectName);
+      },
+      error: error => console.error('Failed to fetch project name:', error)
+    });
   }
 
+  fetchEntryName(entryId: number): void {
+    this.entryService.getEntry(entryId).subscribe({
+      next: (fetchedEntry: Entry) => {
+        this.entryName = fetchedEntry.entryName;
+        this.projectId = fetchedEntry.project.id;
+        this.projectName = fetchedEntry.project.projectName;
+      },
+      error: error => console.error('Failed to fetch entry:', error)
+    });
+  }
 
-  createExcel() {
+  createExcel(): void {
     console.log('Creating an Excel sheet');
   }
 }

@@ -84,4 +84,8 @@ export class ProjectsService {
             projects,
         };
     }
+
+    async getProject(id: number) {
+        return await this.projectRepository.findOne({where: { id }});
+    }
 }

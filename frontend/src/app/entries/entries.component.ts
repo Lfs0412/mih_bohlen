@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Entry} from "./Entry";
 import {EntriesService} from "./entries.service";
 import {ToastrService} from "ngx-toastr";
-import {ActivatedRoute} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {EntryEventsService} from "../shared/entryEvent.service";
 
@@ -27,6 +27,7 @@ export class EntriesComponent {
     private entriesService: EntriesService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
+    private router: Router,
     private entryEventsService: EntryEventsService
   ) {}
 
@@ -51,7 +52,6 @@ export class EntriesComponent {
     this.entriesService.getEntriesByProjectId(Number(this.projectId)).subscribe(
       (data: Entry[]) => {
         this.entries = data;
-        this.toastr.success('Einträge erfolgreich geladen');
       },
       error => {
         this.toastr.error('Fehler beim Abrufen der Einträge');
@@ -60,12 +60,16 @@ export class EntriesComponent {
     );
   }
 
+  goToChat(entryId:number){
+    this.router.navigate([`chat/${entryId}`], {})
+  }
+
 
   // Eintrag löschen
   deleteEntry(entryId: number) {
     this.entriesService.deleteEntry(entryId).subscribe(
       () => {
-        this.entries = this.entries.filter(entry => entry.entryID !== entryId);
+        this.entries = this.entries.filter(entry => entry.id !== entryId);
         this.toastr.success('Eintrag erfolgreich gelöscht');
       },
       error => {

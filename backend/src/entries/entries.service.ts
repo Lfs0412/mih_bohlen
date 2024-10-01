@@ -80,12 +80,16 @@ export class EntriesService {
 
     // Einen bestimmten Eintrag abrufen
     async getEntryById(id: number): Promise<Entry> {
-        const entry = await this.entriesRepository.findOne({ where: { id } });
+        const entry = await this.entriesRepository.findOne({
+            where: { id },
+            relations: ['project'],
+        });
         if (!entry) {
             throw new NotFoundException(`Eintrag mit ID ${id} nicht gefunden`);
         }
         return entry;
     }
+
 
     // Einen Eintrag löschen
     async deleteEntry(id: number): Promise<void> {
