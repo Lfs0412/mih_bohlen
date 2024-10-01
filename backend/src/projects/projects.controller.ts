@@ -1,13 +1,14 @@
 import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {ProjectsService} from "./projects.service";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
-import { CurrentUser} from "../auth/current-user.decorator";
-import { TokenPayload} from "../auth/token-payload.interface";
+import {CurrentUser} from "../auth/current-user.decorator";
+import {TokenPayload} from "../auth/token-payload.interface";
 
 @UseGuards(JwtAuthGuard)
 @Controller('projects')
 export class ProjectsController {
-    constructor(private readonly projectService: ProjectsService) {}
+    constructor(private readonly projectService: ProjectsService) {
+    }
 
     @Post('create')
     createProject(
@@ -15,7 +16,7 @@ export class ProjectsController {
         @CurrentUser() user: TokenPayload
     ) {
         const createdProject = this.projectService.createProject(project, user.userId);
-        return { message: 'Project created successfully', project: createdProject };
+        return {message: 'Project created successfully', project: createdProject};
     }
 
     @Put('update/:id')
@@ -25,7 +26,7 @@ export class ProjectsController {
         @CurrentUser() user: TokenPayload
     ) {
         const updatedProject = this.projectService.updateProject(id, project, user.userId);
-        return { message: 'Project updated successfully', project: updatedProject };
+        return {message: 'Project updated successfully', project: updatedProject};
     }
 
     @Delete('delete/:id')
@@ -34,7 +35,7 @@ export class ProjectsController {
         @CurrentUser() user: TokenPayload
     ) {
         this.projectService.deleteProject(id, user.userId);
-        return { message: 'Project deleted successfully', project: id };
+        return {message: 'Project deleted successfully', project: id};
     }
 
     @Get()
@@ -44,7 +45,12 @@ export class ProjectsController {
         @CurrentUser() user: TokenPayload
     ) {
         const projects = await this.projectService.getAllProjects(page, limit, user.userId);
-        return { message: 'Received projects successfully', projects };
+        return {message: 'Received projects successfully', projects};
+    }
+
+    @Get(':id')
+    async getProject(@Param('id') id: number) {
+        return await this.projectService.getProject(id)
     }
 
     @Get('favorites')
@@ -54,6 +60,6 @@ export class ProjectsController {
         @CurrentUser() user: TokenPayload
     ) {
         const favoriteProjects = await this.projectService.getFavoriteProjects(page, limit, user.userId);
-        return { message: 'Received favorite projects successfully', favoriteProjects };
+        return {message: 'Received favorite projects successfully', favoriteProjects};
     }
 }

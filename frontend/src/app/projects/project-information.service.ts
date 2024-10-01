@@ -24,6 +24,11 @@ export class ProjectInformationService {
     return this.http.get<Project[]>(this.apiUrl, { params });
   }
 
+  getProject(projectId: number): Observable<Project> {
+    console.log('Fetching project information');
+    return this.http.get<Project>(`${this.apiUrl}/${projectId}`);
+  }
+
   createProject(projectName: string, projectDescription: string): Observable<Project> {
     const payload = { projectName, projectDescription };
     return this.http.post<Project>(`${this.apiUrl}/create`, payload, { withCredentials: true });
