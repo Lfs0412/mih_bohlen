@@ -1,9 +1,17 @@
 <div class="chat-container">
   <div class="chat-window">
     <div *ngFor="let message of messages">
-      <div [ngClass]="{'assistant-msg': message.sender === 'Assistant', 'user-msg': message.sender === 'User'}">
-        <span *ngIf="!message.isMarkdown">{{ message.sender }}: {{ message.text }}</span>
-        <span *ngIf="message.isMarkdown" [innerHTML]="message.text"></span> <!-- For Markdown content -->
+      <div
+        class="message-wrapper"
+        [ngClass]="{'assistant-msg-container': message.sender === 'Assistant', 'user-msg-container': message.sender === 'User'}"
+      >
+        <div [ngClass]="{'assistant-msg': message.sender === 'Assistant', 'user-msg': message.sender === 'User'}">
+          <strong>{{ message.sender }}</strong>
+          <div>
+            <span *ngIf="!message.isMarkdown">{{ message.text }}</span>
+            <span *ngIf="message.isMarkdown" [innerHTML]="message.text"></span> <!-- For Markdown content -->
+          </div>
+        </div>
       </div>
     </div>
 
@@ -25,7 +33,7 @@
       placeholder="Type your message..."
       (keydown.enter)="sendMessage()"
     />
-    <button class="btn btn-danger" (click)="sendMessage()">
+    <button class="btn btn-send" (click)="sendMessage()">
       Send
     </button>
   </div>
