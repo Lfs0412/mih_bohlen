@@ -1,12 +1,15 @@
 <div class="sidebar d-flex flex-column bg-light text-dark">
-  <h1 class="text-danger">Hello, User</h1>
+  <h1>Hello, {{ user?.firstname }}</h1>
 
-  <hr class="divider" />
 
   <h5>Work Settings</h5>
   <ul class="nav flex-column mb-3">
     <li class="nav-item">
-      <a class="nav-link" href="/projects">Projects</a>
+      <a class="nav-link"
+         routerLink="/projects"
+         [ngClass]="{'active': isProjectTabActive()}">
+        Projects
+      </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Favorites</a>
@@ -21,7 +24,7 @@
       <a class="nav-link" href="#">Update Password</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Log Out</a>
+      <a class="nav-link" (click)="logout()">Log Out</a>
     </li>
   </ul>
 
@@ -31,4 +34,3 @@
     </footer>
   </div>
 </div>
-

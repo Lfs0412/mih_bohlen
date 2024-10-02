@@ -33,7 +33,7 @@ export class AuthController {
 
     @Post('logout')
     async logout(@Res({passthrough: true}) response: Response) {
-        // Clear the Authentication and Refresh cookies
+        console.log("access logout")
         response.clearCookie('Authentication', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

@@ -41,10 +41,20 @@ export class AuthService {
     );
   }
 
-  logout(){
+  logout() {
     this.userSubject.next(null);  // Clear user state on logout
     return this.http.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          // Optionally, navigate to a login page or clear tokens from local storage
+          console.log("Logged out successfully");
+        },
+        error: (err) => {
+          console.error("Logout error:", err);
+        }
+      });
   }
+
 
   // Handle errors globally
   private handleError(error: any) {
