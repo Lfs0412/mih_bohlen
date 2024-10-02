@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 400px;
+  height: 600px;
   background-color: #f2f2f2;
   padding: 10px;
   border: 1px solid #ccc;
@@ -12,6 +12,19 @@
   flex-grow: 1;
   overflow-y: auto;
   padding: 10px;
+}
+
+.message-wrapper {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.assistant-msg-container {
+  justify-content: flex-start; /* Nachricht des Assistenten nach links */
+}
+
+.user-msg-container {
+  justify-content: flex-end; /* Nachricht des Users nach rechts */
 }
 
 .chat-input {
@@ -24,26 +37,33 @@
 }
 
 .assistant-msg {
-  background-color: #ff4d4d;
+  background-color: #C00D0D;
   color: white;
-  padding: 5px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  text-align: left;
+  padding: 10px;
+  border-radius: 10px;
   max-width: 400px;
+  text-align: left;
 }
 
 .user-msg {
   background-color: #d9d9d9;
-  padding: 5px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  text-align: right;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
   max-width: 400px;
+  text-align: right;
 }
 
 .pending-message {
   text-align: center;
-  color: #ff4d4d;
+  color: #C00D0D;
   margin-top: 10px;
+}
+.btn-send{
+  color: white;
+  background-color: #C00D0D;
+}
+strong {
+  display: block;
+  margin-bottom: 5px; /* Abstand zwischen dem Namen und der Nachricht */
 }
