@@ -1,3 +1,56 @@
 .header container{
   margin-left: 250px;
+  background-color: #D9D9D9;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+  background-color: transparent;  /* Remove default background */
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+
+.breadcrumb-item a {
+  color: #333;  /* Match the navbar text color */
+  text-decoration: none;
+  position: relative;
+  line-height: 1.5; /* Keep consistent line height */
+  width: 100px;
+}
+
+.breadcrumb-item a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px; /* Increase this value to create more space between the text and the underline */
+  width: 0;
+  height: 2px;
+  background-color: #C00D0D; /* Red underline like in navbar */
+  transition: width 0.3s ease;
+}
+
+
+.breadcrumb-item a:hover::after,
+.breadcrumb-item.active a::after {
+  width: 100%; /* Underline on hover and active state */
+}
+
+.breadcrumb-item a:hover {
+  color: #C00D0D; /* Red text color on hover */
+}
+
+.breadcrumb-item.active {
+  font-weight: bold;
+  color: #C00D0D;  /* Match the active state color of the navbar */
+}
+
+/* Breadcrumb Separator */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›"; /* Custom right arrow separator */
+  color: #6c757d;  /* Subtle color for the separator */
+  padding: 0 10px;
 }
