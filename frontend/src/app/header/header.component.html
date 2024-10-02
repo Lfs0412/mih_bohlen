@@ -5,7 +5,7 @@
         <a routerLink="/projects">Projects</a>
       </li>
       <li class="breadcrumb-item" *ngIf="projectName">
-        <a [routerLink]="['/entries', projectId]">{{ projectName }}</a>  <!-- Use projectId here -->
+        <a [routerLink]="['/entries', projectId]">{{ projectName }}</a>
       </li>
       <li class="breadcrumb-item active" *ngIf="entryName" aria-current="page">{{ entryName }}</li>
     </ol>

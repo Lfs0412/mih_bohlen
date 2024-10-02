@@ -5,8 +5,7 @@
   left: 0;
   top: 0;
   padding: 20px;
-  background-color: #f1f1f1; /* Use this to match the light gray in your image */
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  background-color: #D9D9D9; /* Use this to match the light gray in your image */
   display: flex;
   flex-direction: column;
 }
@@ -14,21 +13,43 @@
 h1 {
   font-size: 1.75rem;
   font-weight: bold;
+  margin-bottom: 20px; /* Add space below the headline */
+  color: #C00D0D
 }
 
 h5 {
   font-weight: bold;
+  margin-top: 20px; /* Space between sections */
 }
 
 .nav-link {
   color: #333;
   font-size: 1rem;
   text-decoration: none;
+  position: relative;
+  padding: 8px 0; /* Vertical padding adjusted */
+  display: block;
+  line-height: 1.5; /* Ensures the text and underline are centered */
 }
 
-.nav-link:hover {
-  color: #dc3545; /* Match with the red color in your "Hello, User" text */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; /* Align the underline to start from the left */
+  bottom: 0; /* Align the underline closer to the bottom */
+  width: 0;
+  height: 2px;
+  background-color: #C00D0D; /* Red color for underline */
+  transition: width 0.3s ease;
 }
+
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%; /* Make underline stretch the full width on hover or active */
+}
+
+
 
 .divider {
   border-top: 1px solid #ccc;
