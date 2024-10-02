@@ -1,11 +1,11 @@
-import {Component, Input} from '@angular/core';
-import {Entry} from "../entries/Entry";
-import {EntriesService} from "../entries/entries.service";
-import {ToastrService} from "ngx-toastr";
-import {ActivatedRoute} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {EntryEventsService} from "../shared/entryEvent.service";
+import { Component, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router'; // Import Router
+import { EntriesService } from '../entries/entries.service';
+import { Entry } from '../entries/Entry';
+import { EntryEventsService} from "../shared/entryEvent.service";
 
 @Component({
   selector: 'app-entry-modal',
@@ -17,18 +17,19 @@ import {EntryEventsService} from "../shared/entryEvent.service";
   styleUrl: './entry-modal.component.css'
 })
 export class EntryModalComponent {
-  constructor(private entriesService: EntriesService,
-              private toastr: ToastrService,
-              public activeModal: NgbActiveModal,
-              private entryEventsService: EntryEventsService
+  constructor(
+    private entriesService: EntriesService,
+    private toastr: ToastrService,
+    public activeModal: NgbActiveModal,
+    private entryEventsService: EntryEventsService,
+    private router: Router // Inject Router
+  ) {}
 
-  ) {
-  }
   @Input() projectId: number | null = null;
   newEntryName: string = '';
   newEntryIndex: string = '';
   newEntryInstruction: string = '';
-  newEntryDescription:string = '';
+  newEntryDescription: string = '';
 
   submitCreateEntry() {
     // Check if the fields are filled
@@ -43,10 +44,13 @@ export class EntryModalComponent {
           this.newEntryDescription
         ).subscribe(
           (newEntry: Entry) => {
-            this.activeModal.close();
+            this.activeModal.close(); // Close the modal
             this.toastr.success('Eintrag erfolgreich erstellt');
             this.entryEventsService.notifyEntryCreated();
             this.resetForm();
+
+            // Redirect to chat route with the newly created entry's ID
+            this.router.navigate(['/chat', newEntry.id]);
           },
           error => {
             this.toastr.error('Fehler beim Erstellen des Eintrags');
@@ -62,13 +66,10 @@ export class EntryModalComponent {
     }
   }
 
-
-
   resetForm() {
-    this.newEntryIndex = '';
     this.newEntryName = '';
-    this.newEntryDescription = '';
+    this.newEntryIndex = '';
     this.newEntryInstruction = '';
+    this.newEntryDescription = '';
   }
-
 }

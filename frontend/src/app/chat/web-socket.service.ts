@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { io, Socket} from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,37 +7,33 @@ import { Observable } from 'rxjs';
 })
 export class SocketService {
   private socket: Socket;
-  clientId: string | undefined;
-  apiUrl = 'http://localhost:3000/api/projects';
 
   constructor() {
-    // Verbindung zu deinem Nest.js Backend (angepasst an deine Backend-URL)
-    this.socket = io(`${this.apiUrl}`); // URL deines Backends
+    // Connect to the WebSocket server
+    this.socket = io('ws://localhost:3000');
+
     this.socket.on('connect', () => {
-      this.clientId = this.socket.id;
-      console.log('Client connected', this.clientId);
-    })
+      console.log('Client connected with socket ID:', this.socket.id);
+    });
+
     this.socket.on('disconnect', () => {
       console.log('Client disconnected');
-    })
+    });
   }
 
-  // Methode, um einem Raum beizutreten
-  joinRoom(clientId: string): void {
-    this.socket.emit('join', clientId);
+  // Send only the entryId when the chat starts
+  joinChat(entryId: number) {
+    this.socket.emit('join', entryId);
+    console.log('Joined chat with entryId:', entryId);
   }
 
-  // Nachrichten empfangen
+  // Listen for requestReady event
   onRequestReady(): Observable<string> {
     return new Observable((observer) => {
       this.socket.on('requestReady', (data: string) => {
         observer.next(data);
+        console.log('Received "requestReady" event with data:', data);
       });
     });
-  }
-
-  // Methode zum Senden von Nachrichten (falls nötig)
-  sendMessage(message: string): void {
-    this.socket.emit('message', message);
   }
 }

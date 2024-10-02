@@ -4,6 +4,8 @@ import { JobController } from './job.controller';
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {RequestGateway} from "./request.gateway";
+import {Entry} from "../entities/entry.entity";
+import {User} from "../entities/user.entity";
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import {RequestGateway} from "./request.gateway";
       },
     ]),
       TypeOrmModule.forFeature(
-        [],
+        [User, Entry],
       )
   ],
   providers: [JobService, RequestGateway],

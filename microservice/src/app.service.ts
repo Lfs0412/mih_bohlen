@@ -7,9 +7,6 @@ import { AIMessageDTO } from './DTOs/AiMessageDTO';
 @Injectable()
 export class AppService {
   private client: ClientProxy;
-  private userApiKey: string =
-      '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';
-
   constructor() {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
@@ -21,7 +18,7 @@ export class AppService {
   }
 
   async messageToAssist(apiKey: string, threadId: string, message: string, entryId: number): Promise<any> {
-    console.log(apiKey);
+    console.log(apiKey, threadId, message, entryId);
 
     const openai = new OpenAI({ apiKey: apiKey });
 
@@ -33,8 +30,6 @@ export class AppService {
         content: message,
       });
 
-      //TODO simply Promise logic!!!
-
       // Return a promise to resolve when the response is received
       return new Promise((resolve, reject) => {
         const stream = openai.beta.threads.runs.stream(threadId, {
@@ -44,8 +39,8 @@ export class AppService {
               if (event.content[0].type === 'text') {
                 const responseText = event.content[0].text;
 
-                // Emit the response text to the client
-                this.client.emit('request_completed', { response: responseText });
+                // Emit the response text to the main backend and include the entryId
+                this.client.emit('request_completed', { entryId, response: responseText });
 
                 // Resolve the promise with the response text
                 resolve({ response: responseText });
@@ -53,8 +48,8 @@ export class AppService {
               } else {
                 const noTextResponse = 'No text response';
 
-                // Emit the no text response to the client
-                this.client.emit('response_event', { response: noTextResponse });
+                // Emit the no text response to the main backend
+                this.client.emit('request_completed', { entryId, response: noTextResponse });
 
                 // Resolve the promise with no text response
                 resolve({ response: noTextResponse });
@@ -70,4 +65,5 @@ export class AppService {
       throw new Error(error.message);
     }
   }
+
 }
