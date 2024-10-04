@@ -5,6 +5,7 @@ import {CreateEntryDTO} from "./DTOs/CreateEntryDTO";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {TokenPayload} from "../auth/token-payload.interface";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {User} from "../entities/user.entity";
 
 @Controller('entries')
 @UseGuards(JwtAuthGuard)
@@ -14,21 +15,19 @@ export class EntriesController {
     @Post('create')
     // POST: /entries/create - Einen neuen Eintrag erstellen
     async createEntry(
-        @CurrentUser() user: TokenPayload,
+        @CurrentUser() user: User,
         @Body() createEntryDto: CreateEntryDTO): Promise<Entry> {
-        console.log(user.userId);
-        return this.entriesService.createEntry(user.userId, createEntryDto);
+        return this.entriesService.createEntry(user.id, createEntryDto);
     }
 
-    // GET: /entries/project/:projectId - Alle Einträge für ein bestimmtes Projekt abrufen
-    @Get('entries/:projectId')
-    async getEntriesByProjectId(@Param('projectId') projectId: number): Promise<Entry[]> {
-        return this.entriesService.getEntriesByProjectId(projectId);
+    @Get('getByProject/:id')
+    async getEntriesByProjectId(@Param('id') projectId: number, @CurrentUser() user: User): Promise<Entry[]> {
+        return this.entriesService.getEntriesByProjectId(projectId, user.id);
     }
 
     // GET: /entries/:id - Einen einzelnen Eintrag abrufen
-    @Get(':id')
-    async getEntryById(@Param('id') id: number): Promise<Entry> {
-      return await this.entriesService.getEntryById(id);
+    @Get('getByEntry/:id')
+    async getEntryById(@Param('id') id: number, @CurrentUser() user: User): Promise<Entry> {
+      return await this.entriesService.getEntryById(id, user.id);
     }
 }

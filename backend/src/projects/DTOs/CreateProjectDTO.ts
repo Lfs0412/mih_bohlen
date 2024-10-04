@@ -1,6 +1,9 @@
-interface CreateProjectDTO {
-    projectID:number;
+import {IsString} from "class-validator";
+
+export class CreateProjectDTO {
+    @IsString()
     projectName:string;
+    @IsString()
     projectDescription:string;
-    createDate:number;
+
 }

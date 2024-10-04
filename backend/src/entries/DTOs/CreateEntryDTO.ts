@@ -1,8 +1,12 @@
-export interface CreateEntryDTO {
+import {IsBoolean, IsNumber, IsString} from "class-validator";
+
+export class CreateEntryDTO {
+    @IsNumber()
     projectId:number;
-    entryId: number;
+    @IsString()
     index:string;
+    @IsString()
     entryName:string;
-    status:string;
+    @IsString()
     messages: string;
 }

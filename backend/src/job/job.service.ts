@@ -9,7 +9,7 @@ import {Entry} from "../entities/entry.entity";
 import OpenAI from "openai";
 import {User} from "../entities/user.entity";
 import {MessageDTO} from "./DTOs/MessageDTO";
-
+import { compare } from 'bcryptjs';
 
 @Injectable()
 export class JobService {
@@ -90,7 +90,6 @@ export class JobService {
 
 
 
-
     async getMessages(id: number, userId: number) {
         const entry = await this.entryRepository.findOne({where: {id}})
         const user = await this.userRepository.findOne({where: {id: userId}});
@@ -102,4 +101,5 @@ export class JobService {
             `${entry.threadId}`
         );
     }
+
 }
