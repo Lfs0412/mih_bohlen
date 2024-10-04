@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
-import {Entry} from "./Entry";
-import {EntriesService} from "./entries.service";
-import {ToastrService} from "ngx-toastr";
-import {Router, ActivatedRoute} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {EntryEventsService} from "../shared/entryEvent.service";
-import {DatePipe} from "@angular/common";
+import { Entry } from "./Entry";
+import { EntriesService } from "./entries.service";
+import { ToastrService } from "ngx-toastr";
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+import { EntryEventsService } from "../shared/entryEvent.service";
+import { DatePipe } from "@angular/common";
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  query,
+  stagger, animateChild
+} from '@angular/animations';
 
 @Component({
   selector: 'app-entries',
@@ -15,7 +23,46 @@ import {DatePipe} from "@angular/common";
     DatePipe
   ],
   templateUrl: './entries.component.html',
-  styleUrl: './entries.component.css'
+  styleUrls: ['./entries.component.css'],  // Fixed 'styleUrl' -> 'styleUrls'
+  animations: [
+    // Neuer Trigger auf Komponentenebene
+    trigger('componentAnimation', [
+      transition(':enter', [
+        // Warten auf die Ausführung von listStagger
+        query('@listStagger', animateChild(), { optional: true })
+      ])
+    ]),
+    // Ihre bestehende listStagger-Animation
+    trigger('listStagger', [
+      transition('* => *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateY(-15px)' }),
+            stagger('50ms', [
+              animate(
+                '550ms ease-out',
+                style({ opacity: 1, transform: 'translateY(0)' })
+              )
+            ])
+          ],
+          { optional: true }
+        ),
+        query(
+          ':leave',
+          [
+            stagger('50ms', [
+              animate(
+                '550ms',
+                style({ opacity: 0, transform: 'translateY(-15px)' })
+              )
+            ])
+          ],
+          { optional: true }
+        )
+      ])
+    ])
+  ]
 })
 export class EntriesComponent {
   entries: Entry[] = [];

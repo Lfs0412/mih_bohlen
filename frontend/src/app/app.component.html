@@ -4,7 +4,9 @@
     <div class="content-container flex-grow-1">
       <app-header></app-header> <!-- Header at the top -->
       <div class="page-content">
-        <router-outlet></router-outlet> <!-- Where the project list or other content will render -->
+        <div [@routeAnimations]="getAnimationData(outlet)">
+        <router-outlet  #outlet="outlet"></router-outlet> <!-- Where the project list or other content will render -->
+        </div>
       </div>
     </div>
   </ng-container>

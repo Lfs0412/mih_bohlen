@@ -1,11 +1,16 @@
+<div [@componentAnimation]>
 <div class="container">
   @if(projects.length === 0){
     <p>Sie haben derzeit keine Projekte. Legen Sie gerne ein neues an</p>
-  }@else{
-    @for(project of projects; track $index){
-      <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center mb-2" style="width: 100%;" (click)="goToProjectEntries(project.id)">
-
+  } @else {
+    <!-- Apply the animation trigger to the ul element -->
+    <ul class="list-group" [@listStagger]>
+      @for(project of projects; track $index){
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center mb-2"
+          style="width: 100%;"
+          (click)="goToProjectEntries(project.id)"
+        >
           <!-- Projektinformationen -->
           <div class="project-details d-flex flex-grow-1 justify-content-between">
             <div class="project-info">
@@ -16,15 +21,21 @@
             <!-- Datum und Aktionen in einer Reihe -->
             <div class="d-flex align-items-center">
               <small class="text-muted mr-3">
-                Erstellt am: {{ project.createdAt | date:'dd.MM.yyyy' }}
+                Erstellt am: {{ project.createdAt | date: 'dd.MM.yyyy' }}
               </small>
               <div class="btn-group">
-                <button class="btn btn-danger btn-sm" (click)="deleteProject(project.id)">Löschen</button>
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteProject(project.id); $event.stopPropagation()"
+                >
+                  Löschen
+                </button>
               </div>
             </div>
           </div>
         </li>
-      </ul>
-    }
+      }
+    </ul>
   }
+</div>
 </div>

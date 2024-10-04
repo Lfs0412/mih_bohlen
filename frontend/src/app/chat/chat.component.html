@@ -1,21 +1,36 @@
-<div class="chat-container">
-  <div class="chat-window">
-    <div *ngFor="let message of messages">
+<div class="chat-container" [@componentAnimation]>
+  <div class="chat-window" #chatWindow>
+    <div *ngFor="let message of messages; let i = index; trackBy: trackByIndex">
+      <!--TODO Assistant oder User macht keinen Unterschied, nachricht kommt immer von links -->
       <div
         class="message-wrapper"
-        [ngClass]="{'assistant-msg-container': message.sender === 'Assistant', 'user-msg-container': message.sender === 'User'}"
+        [ngClass]="{
+    'assistant-msg-container': message.sender === 'Assistant',
+    'user-msg-container': message.sender === 'User'
+  }"
+        [@messageAnimation]="message.isNew ? '' : null"
+        [ngStyle]="
+    message.isNew
+      ? { transform: 'translateX(' + (message.sender === 'Assistant' ? '-100%' : '100%') + ')' }
+      : {}
+  "
       >
-        <div [ngClass]="{'assistant-msg': message.sender === 'Assistant', 'user-msg': message.sender === 'User'}">
+        <div
+          [ngClass]="{
+            'assistant-msg': message.sender === 'Assistant',
+            'user-msg': message.sender === 'User'
+          }"
+        >
           <strong>{{ message.sender }}</strong>
           <div>
             <span *ngIf="!message.isMarkdown">{{ message.text }}</span>
-            <span *ngIf="message.isMarkdown" [innerHTML]="message.text"></span> <!-- For Markdown content -->
+            <span *ngIf="message.isMarkdown" [innerHTML]="message.text"></span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Pending message or animation -->
+    <!-- Wartende Nachricht oder Animation -->
     <div *ngIf="isPending" class="pending-message">
       <div class="spinner-border text-danger" role="status">
         <span class="sr-only">Loading...</span>
@@ -30,11 +45,11 @@
       [(ngModel)]="newMessage"
       class="form-control"
       [disabled]="isPending"
-      placeholder="Type your message..."
+      placeholder="Nachricht eingeben..."
       (keydown.enter)="sendMessage()"
     />
     <button class="btn btn-send" (click)="sendMessage()">
-      Send
+      Senden
     </button>
   </div>
 </div>
