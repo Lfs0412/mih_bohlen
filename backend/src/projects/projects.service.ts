@@ -1,8 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {ForbiddenException, Injectable, NotFoundException} from '@nestjs/common';
 import { Project } from "../entities/project.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entities/user.entity";
+import {CreateProjectDTO} from "./DTOs/CreateProjectDTO";
+import {UpdateProjectDTO} from "./DTOs/updateProjectDTO";
 
 @Injectable()
 export class ProjectsService {
@@ -21,7 +23,9 @@ export class ProjectsService {
             throw new NotFoundException('User not found');
         }
         const newProject = this.projectRepository.create({
-            ...project,
+            projectName: project.projectName,
+            projectDescription: project.projectDescription,
+            createdAt: new Date(),
             user,  // Associate the project with the user entity
         });
 
@@ -30,28 +34,33 @@ export class ProjectsService {
 
     // Delete a project that belongs to the current user
     async deleteProject(id: number, userId: number): Promise<void> {
-        const result = await this.projectRepository.delete({ id, user: { id: userId } });
-        if (result.affected === 0) {
-            throw new NotFoundException('Project not found or you do not have permission to delete it.');
+        const project = await this.projectRepository.findOne({ where: { id }, relations: ['user'] });
+        if (!project) {
+            throw new NotFoundException('Project not found');
         }
+        if (project.user.id !== userId) {
+            throw new ForbiddenException('You do not have permission to delete this project.');
+        }
+        await this.projectRepository.delete(id);
     }
 
     // Update a project that belongs to the current user
-    async updateProject(id: number, project: UpdateProjectDTO, userId: number): Promise<Project> {
-        const existingProject = await this.projectRepository.findOne({
-            where: { id, user: { id: userId } },  // Ensure the project belongs to the user
-        });
+    async updateProject(id: number, projectData: UpdateProjectDTO, userId: number): Promise<Project> {
+        const existingProject = await this.projectRepository.findOne({ where: { id }, relations: ['user'] });
         if (!existingProject) {
-            throw new NotFoundException('Project not found or you do not have permission to update it.');
+            throw new NotFoundException('Project not found');
+        }
+        if (existingProject.user.id !== userId) {
+            throw new ForbiddenException('You do not have permission to update this project.');
         }
 
-        // Update the fields with the new data
-        existingProject.projectName = project.projectName;
-        existingProject.projectDescription = project.projectDescription;
+        // Aktualisieren Sie nur erlaubte Felder
+        existingProject.projectName = projectData.projectName;
+        existingProject.projectDescription = projectData.projectDescription;
 
-        // Save the updated project
         return await this.projectRepository.save(existingProject);
     }
+
 
     // Fetch all projects for the current user with pagination
     async getAllProjects(page: number, limit: number, userId: number): Promise<any> {
@@ -85,7 +94,24 @@ export class ProjectsService {
         };
     }
 
-    async getProject(id: number) {
-        return await this.projectRepository.findOne({where: { id }});
+    async getProject(id: number, userId: number): Promise<Project> {
+        if (!userId) {
+            throw new ForbiddenException('User ID is required to view the project.');
+        }
+
+        const project = await this.projectRepository.findOne({
+            where: { id },
+            relations: ['user'],
+        });
+
+        if (!project) {
+            throw new NotFoundException('Project not found');
+        }
+        if (project.user.id !== userId) {
+            throw new ForbiddenException('You do not have permission to view this project.');
+        }
+        return project;
     }
+
+
 }

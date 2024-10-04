@@ -13,7 +13,7 @@ export class EntriesService {
   constructor(private http: HttpClient) { }
 
   getEntriesByProjectId(projectId: number): Observable<Entry[]> {
-    return this.http.get<Entry[]>(`${this.apiUrl}/entries/${projectId}`);
+    return this.http.get<Entry[]>(`${this.apiUrl}/getByProject/${projectId}`);
   }
 
   createEntry(projectId: number, index: string, entryName: string, entryInstructions: string, description:string): Observable<Entry> {
@@ -27,6 +27,6 @@ export class EntriesService {
   }
 
   getEntry(entryId: number) {
-    return this.http.get<Entry>(`${this.apiUrl}/${entryId}`);
+    return this.http.get<Entry>(`${this.apiUrl}/getByEntry/${entryId}`);
   }
 }

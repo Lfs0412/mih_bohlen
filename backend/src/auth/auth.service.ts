@@ -76,15 +76,14 @@ export class AuthService {
     }
 
     async verifyUser(username: string, password: string) {
-        console.log(username)
         try {
-            const user = await this.usersService.getUser({
-                username
-            });
-            console.log(user)
+            const user = await this.usersService.getUser({ username });
+            if (!user) {
+                throw new UnauthorizedException('Credentials are not valid.');
+            }
             const authenticated = await compare(password, user.password);
             if (!authenticated) {
-                throw new UnauthorizedException();
+                throw new UnauthorizedException('Credentials are not valid.');
             }
             return user;
         } catch (err) {
@@ -92,16 +91,21 @@ export class AuthService {
         }
     }
 
-    async veryifyUserRefreshToken(refreshToken: string, userId: number) {
+
+    async verifyUserRefreshToken(refreshToken: string, userId: number) {
         try {
             const user = await this.usersService.getUser({ id: userId });
+            if (!user) {
+                throw new UnauthorizedException('Refresh token is not valid.');
+            }
             const authenticated = await compare(refreshToken, user.refreshToken);
             if (!authenticated) {
-                throw new UnauthorizedException();
+                throw new UnauthorizedException('Refresh token is not valid.');
             }
             return user;
         } catch (err) {
             throw new UnauthorizedException('Refresh token is not valid.');
         }
     }
+
 }

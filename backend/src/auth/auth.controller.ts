@@ -17,7 +17,6 @@ export class AuthController {
         @Res({ passthrough: true }) response: Response,
     ) {
         const { username, password } = body;
-        console.log(username);
         const user = await this.authService.verifyUser(username, password);
         await this.authService.login(user, response);
     }

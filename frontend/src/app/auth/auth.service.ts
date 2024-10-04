@@ -41,10 +41,17 @@ export class AuthService {
     );
   }
 
-  logout(){
+  logout(): Observable<void> {
     this.userSubject.next(null);  // Clear user state on logout
-    return this.http.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
+    return this.http.post<void>('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
+      .pipe(
+        tap(() => {
+          // Optionally perform other actions on logout, like clearing local storage
+          console.log('Logged out successfully');
+        })
+      );
   }
+
 
   // Handle errors globally
   private handleError(error: any) {
