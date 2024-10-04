@@ -1,8 +1,5 @@
 <div class="container">
-  <h2>Positions Einträge</h2>
-
-
-  <!-- Anzeige, wenn keine Einträge vorhanden sind -->
+    <!-- Anzeige, wenn keine Einträge vorhanden sind -->
   @if(entries.length === 0){
     <p>Es sind derzeit keine Einträge vorhanden. Erstellen Sie gerne Ihren ersten!</p>
   }
@@ -11,20 +8,26 @@
   @if(entries.length > 0){
     @for(entry of entries; track $index){
       <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center" (click)="goToChat(entry.id)">
+        <li class="list-group-item d-flex justify-content-between align-items-center mb-2" style="width: 100%;" (click)="goToChat(entry.id)">
 
           <!-- Eintragsinformationen -->
-          <div class="entry-details">
-            <h5>{{ entry.index}}</h5>
-            <p>{{ entry.entryName }}</p>
-            <small class="text-muted">Erstellt am: {{ entry.createdAt }}</small>
+          <div class="entry-details d-flex flex-grow-1 justify-content-between">
+            <div class="entry-info">
+              <h5>{{ entry.index }}</h5>
+              <p>{{ entry.entryName }}</p>
+            </div>
+
+            <!-- Datum und Aktionen in einer Reihe -->
+            <div class="d-flex align-items-center">
+              <small class="text-muted mr-3">
+                Erstellt am: {{ entry.createdAt | date:'dd.MM.yyyy' }}
+              </small>
+              <div class="btn-group">
+                <button class="btn btn-danger btn-sm" (click)="deleteEntry(entry.id)">Löschen</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Button-Gruppe für Aktionen (Bearbeiten, Löschen) -->
-          <div class="btn-group">
-            <!--  <button class="btn btn-primary btn-sm mr-2" (click)="editEntry(entry)">Bearbeiten</button>-->
-            <button class="btn btn-danger btn-sm" (click)="deleteEntry(entry.id)">Löschen</button>
-          </div>
         </li>
       </ul>
     }

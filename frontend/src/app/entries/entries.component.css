@@ -1,0 +1,51 @@
+.container {
+  margin-top: 20px;
+}
+
+.list-group-item {
+  display: flex;
+  border-radius: 0px;
+  border-color: transparent;
+  background-color: rgba(223, 223, 217, 0.39);
+  color: #333333;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Nutzt die volle Breite */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #981717; /* Hover-Effekt für Listenelemente */
+  color: white; /* Setzt die Haupttextfarbe auf Weiß beim Hover */
+}
+
+.list-group-item:hover .entry-info h5,
+.list-group-item:hover .entry-info p,
+.list-group-item:hover small {
+  color: white !important; /* Ändert die Farbe der Eintragsinfo (Index, Name) und des Datums beim Hover */
+}
+
+.entry-details {
+  display: flex;
+  flex-grow: 1; /* Lässt den Eintragsinhalt die volle Breite nutzen */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entry-info h5 {
+  margin: 0;
+}
+
+.entry-info p {
+  margin: 0;
+  color: #6c757d; /* Optional: eine dezentere Farbe für die Beschreibung */
+}
+
+.d-flex.align-items-center {
+  flex-shrink: 0; /* Verhindert, dass Datum und Button in kleinere Bildschirme gestaucht werden */
+}
+
+.btn-group {
+  margin-left: 15px; /* Abstand zwischen dem Datum und den Buttons */
+}
