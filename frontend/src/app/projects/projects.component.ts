@@ -6,12 +6,14 @@ import { ProjectInformationService } from "./project-information.service";
 import {FormsModule} from "@angular/forms";
 import {BreadcrumbService} from "../shared/breadcrumb.service";
 import {ProjectEventsService} from "../shared/projectEvent.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-projects',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'] // fix: 'styleUrl' -> 'styleUrls'

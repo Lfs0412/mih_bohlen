@@ -5,12 +5,14 @@ import {ToastrService} from "ngx-toastr";
 import {Router, ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {EntryEventsService} from "../shared/entryEvent.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-entries',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './entries.component.html',
   styleUrl: './entries.component.css'
